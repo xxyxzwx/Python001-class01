@@ -12,12 +12,25 @@ def get(url):
 def bsinfo(url):
     print(get(url).status_code)
     bs_info = bs(get(url).text,'html.parser')
+    #获取前十个电影
     for tags in bs_info.find_all('div', attrs = {'class': 'movie-item film-channel'}, limit = 10):
         for tag_a in tags.find_all('a', limit = 1):
+            #获取每个电影的uri组成需要请求的url
             movie_uri = tag_a.get('href')
             movie_url = 'https://maoyan.com'+movie_uri
-            print(movie_url)
-            #movie_info = bs(get(movie_uri).text,'html.parser')
-            #for tag in movie_info.find_all('div', attrs = {'class': 'movie-brief-container'})
+            #print(movie_url)
 
+            #请求每个电影的详情页url获取信息
+            movie_info = bs(get(movie_url).text,'html.parser')
+            for tag in movie_info.find_all('div', attrs = {'class': 'movie-brief-container'}):
+                movie_name = tag.find('h1').text
+                print(movie_name)
+
+                movie_label = []
+                for label in tag.find_all('li', attrs = {'class': 'ellipsis'}):
+                    label = label.text.replace(' ','').replace('\n','')
+                    movie_label.append(label)
+                print(movie_label)
+
+                
 bsinfo(url)
