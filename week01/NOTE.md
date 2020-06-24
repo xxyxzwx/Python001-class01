@@ -17,4 +17,5 @@ print(response.read().decode())
 
 1.7 cookie中含有密码认证信息，实际使用中可以使用通过认证的cookie请求需要账户的页面内容
 
-1.9 allow_domain只包含允许的主域名，有些页面存在跨域跳转，如果要爬取的页面跨域，需要跨域之后的域名以list元素的形式添加到allow_domain中
+1.9 allow_domains只包含允许的主域名，有些页面存在跨域跳转，如果要爬取的页面跨域，还需测试将跨域的域名加入到allow_domains是否有用。
+callback回调函数是用parse函数，beautifulsoup解析页面是用html.parser，注意区分
