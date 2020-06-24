@@ -14,3 +14,7 @@ print(response.read().decode())
 还可以通过string = re.compile('xxxxx')过滤关键字
 
 1.3 不同电影详情页标签数量不同，要想拉取所有电影上映时间需要做调整
+
+1.7 cookie中含有密码认证信息，实际使用中可以使用通过认证的cookie请求需要账户的页面内容
+
+1.9 allow_domain只包含允许的主域名，有些页面存在跨域跳转，如果要爬取的页面跨域，需要跨域之后的域名以list元素的形式添加到allow_domain中
