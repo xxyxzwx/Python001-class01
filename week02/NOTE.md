@@ -1,1 +1,6 @@
 学习笔记
+2.2 fetchall获取sql语句的全部输出，但是先执行过fetchone后再执行fetchall就会获取去除fetchone数据后的全部输出，类似于消息队列的形式
+
+2.4/2.5通过request接口登陆shimo文档的时候post的账户是前端处理过的添加国家标识码+86手机号。而通过selenium模拟点击登陆时只是未带国家标识码的普通手机号。直接使用request的数据无法完成登陆
+
+直接post石墨的接口会有csrf的报错，需要在网页request headers中找到并添加x-requested-with: XmlHttpRequest。经百度有该参数为Ajax异步请求，若无为同步请求/直接请求。
