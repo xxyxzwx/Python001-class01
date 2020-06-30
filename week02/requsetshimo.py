@@ -21,25 +21,16 @@ password = post_data['password']
 file.close()
 #print(post_data)
 
-loginurl = 'https://shimo.im/lizard-api/auth/password/login'
-
-loginsession = requests.session()
-loginresponse = loginsession.post(loginurl, data = post_data, headers = headers)
-print(loginresponse.status_code)
-url2 = 'https://shimo.im/dashboard/used'
-useresponse = loginsession.get(url2, headers = headers)
-print(useresponse.status_code)
-print(useresponse.text)
-
 def req():
     loginurl = 'https://shimo.im/lizard-api/auth/password/login'
 
     loginsession = requests.session()
     loginresponse = loginsession.post(loginurl, data = post_data, headers = headers)
-    print(loginresponse.text)
+    print(loginresponse.status_code)
     url2 = 'https://shimo.im/dashboard/used'
     useresponse = loginsession.get(url2, headers = headers)
     print(useresponse.status_code)
+    print(useresponse.text)
     
 def webclick(url):
     browser = webdriver.Chrome()
@@ -58,6 +49,6 @@ def webclick(url):
     finally:
         browser.close()
 
-#if __name__ == '__main__':
-    #req()
+if __name__ == '__main__':
+    req()
     #webclick(headers['Referer'])
