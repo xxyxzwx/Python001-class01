@@ -54,7 +54,7 @@ ROBOTSTXT_OBEY = True
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     'books.middlewares.BooksDownloaderMiddleware': 543,
-    'books.middlewares.ProxyMiddleware': None
+    'books.middlewares.ProxyMiddleware': 400
 }
 
 #PROXY_LIST = ['http://91.205.174.26:80','http://104.244.77.254:8080']

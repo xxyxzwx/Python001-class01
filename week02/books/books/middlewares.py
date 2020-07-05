@@ -60,7 +60,7 @@ class BooksSpiderMiddleware:
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
 
-'''
+
 class ProxyMiddleware(HttpProxyMiddleware):
     def __init__(self,auth_encoding='uft-8',proxy_list=None):
         self.proxies = defaultdict(list)
@@ -79,7 +79,7 @@ class ProxyMiddleware(HttpProxyMiddleware):
     def _set_proxy(self, request, scheme):
         proxy = random.choice(self.proxies[scheme])
         request.meta['proxy'] = proxy
-'''
+
 
 class BooksDownloaderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
