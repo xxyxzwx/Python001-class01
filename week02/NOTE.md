@@ -4,3 +4,7 @@
 2.4/2.5通过request接口登陆shimo文档的时候post的账户是前端处理过的添加国家标识码+86手机号。而通过selenium模拟点击登陆时只是未带国家标识码的普通手机号。直接使用request的数据无法完成登陆
 
 直接post石墨的接口会有csrf的报错，需要在网页request headers中找到并添加x-requested-with: XmlHttpRequest。经百度有该参数为Ajax异步请求，若无为同步请求/直接请求。
+
+2.8 学习了一遍类的继承，思路应该是先改写获取代理ip list函数return给__init__。这里如果用正则表达式切分代理ip和协议需要注意正则切出来的是一个list，而我们传给set_proxy函数需要传输string
+
+作业1爬取班级分享提供的1000本书页面，在pipeline存储到mysql时采用__init__连接数据库 process_item中断开数据库连接，后发现这种情况之后存储第一条数据,只能将数据库连接放在process_item中，有待后续研究怎么在整个爬虫完成后断开数据库连接
