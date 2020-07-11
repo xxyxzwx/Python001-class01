@@ -23,7 +23,7 @@ def help_parse():
                             dest = 'ipaddr',
                             help = 'ip范围,只考虑C类子网')
     parser.add_argument('-v','--verbose',
-                            required = False,
+                            action="store_true",
                             dest = 'verbose',
                             help = '详细信息')
     return parser
@@ -83,7 +83,7 @@ if __name__=="__main__":
         pool.close()
         pool.join()
     else:
-        for port in range(11100,11200):
+        for port in range(1,65536):
             pool.apply_async(portcheck,(parser.ipaddr,port,))
         pool.close()
         pool.join()
