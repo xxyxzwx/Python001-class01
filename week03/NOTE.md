@@ -1,1 +1,6 @@
 学习笔记
+创建多进程时，子进程由于调用会慢于父进程，所以表现出优先输出完__main__中的内容，再输出子进程的信息。如果在__main__中添加time.sleep则会发现子进程先输出完成，同时multiprocessing.active_children()获取到的是一个空的list。
+
+使用队列时，get设置timeout获取空队列时会获取到raise触发的Empty，而不是正常的异常类型，无法通过except进行操作
+
+多进程使用队列时需要使用multiprocessing中的Queue模块，而不是使用python自带的Queue包，这里的Queue是常规意义上的队列，并不是多进程重写过的队列。但是常规意义上的队伍可以给多线程使用
