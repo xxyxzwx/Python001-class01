@@ -1,7 +1,7 @@
 import argparse,sys,subprocess,time,os
 from multiprocessing import Pool,Queue,Process
 from ipaddress import ip_address
-import socket
+import socket,json,multiprocessing
 
 def help_parse():
     parser = argparse.ArgumentParser()
@@ -26,6 +26,11 @@ def help_parse():
                             action="store_true",
                             dest = 'verbose',
                             help = '详细信息')
+    parser.add_argument('-w','--write',
+                            required = False,
+                            type = str,
+                            dest = 'file',
+                            help = '写入文件')
     return parser
 
 def splitip(iprange):
@@ -44,29 +49,29 @@ def ipcheck(ip):
     #starttime = time.time()
     try:
         result = subprocess.call(f'ping -c 1 -W 1 {ip}',shell=True,stdout=subprocess.PIPE)
-        print(os.getpid(),ip)
+        #print(os.getpid(),ip)
         if result == 0:
             print(ip)
     except Exception as e:
         pass
 
-def portcheck(ipaddr,port):
+def portcheck(ipaddr,port,file):
     try:
+        lock = multiprocessing.Lock()
         s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         result = s.connect_ex((ipaddr,port)) 
         #print(os.getpid(),port)
-        if(result == 0):  
-            print (ipaddr,port)
+        if(result == 0):
+            lock.acquire()
+            file = open(file,'a+')
+            print(json.dumps({ipaddr:port}))
+            file.write(json.dumps({ipaddr:port}))
+            lock.release()
         s.close()
+        file.close()
     except Exception as e:
         pass
 
-'''
-    result = subprocess.Popen(f'nc -z -n {ipaddr} 11100-11200',shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-    for port in result.stdout.readlines():
-        infolist = port.decode('utf-8').split(' ')
-        print(infolist[2],infolist[4])
-'''
 if __name__=="__main__":
     parser = help_parse().parse_args()
     pool = Pool(parser.number)
@@ -83,8 +88,8 @@ if __name__=="__main__":
         pool.close()
         pool.join()
     else:
-        for port in range(1,65536):
-            pool.apply_async(portcheck,(parser.ipaddr,port,))
+        for port in range(11100,11200):
+            pool.apply_async(portcheck,(parser.ipaddr,port,parser.file))
         pool.close()
         pool.join()
     if parser.verbose:
