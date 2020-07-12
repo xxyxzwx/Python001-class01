@@ -88,6 +88,7 @@ if __name__=="__main__":
         pool.close()
         pool.join()
     else:
+        #1-1024端口未启用，改为11100-11200测试调试
         for port in range(11100,11200):
             pool.apply_async(portcheck,(parser.ipaddr,port,parser.file))
         pool.close()
