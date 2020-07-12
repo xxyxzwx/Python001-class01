@@ -4,3 +4,5 @@
 使用队列时，get设置timeout获取空队列时会获取到raise触发的Empty，而不是正常的异常类型，无法通过except进行操作
 
 多进程使用队列时需要使用multiprocessing中的Queue模块，而不是使用python自带的Queue包，这里的Queue是常规意义上的队列，并不是多进程重写过的队列。但是常规意义上的队伍可以给多线程使用
+
+对于点击翻页前端无变化的页面，需要使用ajax异步请求，header添加X-Requester-With和Referer,根据页面post数据。ajax请求post请求后返回的是json格式的数据。不是html页面。处理需要通过json进行处理
