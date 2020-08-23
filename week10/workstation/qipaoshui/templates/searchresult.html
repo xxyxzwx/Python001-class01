@@ -1,19 +1,123 @@
-<div class="col-lg-4">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <form class="bs-example bs-example-form" role="form">
+{% extends "base_layout.html" %} {% block title %}Welcome{% endblock %} 
+{% load static %}
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/timeline.css' %}">
+    <link rel="stylesheet" href="{% static 'css/morris.css' %}">
+{% endblock %} 
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Dashboard</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="input-group">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="search">查询</button>
-                            </span>
-                            <input type="text" class="form-control" name="message">
-                        </div><!-- /input-group -->
+                    <div class="col-xs-3">
+                        <i class="fa fa-comments fa-5x"></i>
                     </div>
-                </form>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ count }}</div>
+                        <div>评论数量</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
         </div>
-        <div class="panel-body">
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tasks fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ type_count }}</div>
+                        <div>产品种类</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-shopping-cart fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ user_count }}</div>
+                        <div>评论用户数</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-red">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-support fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ good_con_num }}</div>
+                        <div>好评数量</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            <form class="bs-example bs-example-form" role="form" action="search">
+                {% csrf_token %}
+                <i class="fa fa-bar-chart-o fa-fw"></i> 查询评论
+            </div>
+            <div class="panel-body">
+                <input type="text" class="form-control" name="query_body">
+                <button class="btn btn-default" type="search">查询</button>
+                </form>
+            </div>
+            <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
@@ -21,17 +125,18 @@
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
                                     <tr>
+                                        <th>产品</th>
+                                        <th>商品</th>
                                         <th>用户</th>
-                                        <th>评分</th>
                                         <th>评论</th>
+                                        <th>评论时间</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for pinglun in infor %}
+                                    {% for pinglun in type_comment_count %}
                                         <tr>
-                                            <td>{{pinglun.user}}</td>
-                                            <td>{{pinglun.star}}</td>
-                                            <td>{{pinglun.content}}</td>
+                                            <td>{{pinglun.productType}}</td>
+                                            <td>{{pinglun.c}}</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -44,8 +149,19 @@
                 </div>
                 <!-- /.row -->
             </div>
+            <!-- /.panel-body -->
         </div>
-        <!-- /.panel-body -->
+        <!-- /.panel -->
+
     </div>
-    <!-- /.panel -->
+
 </div>
+<!-- /.row -->
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/raphael-min.js' %}"></script>
+    <script src="{% static 'js/morris.min.js' %}"></script>
+    <script src="{% static 'js/morris-data.js' %}"></script>
+
+{% endblock %}

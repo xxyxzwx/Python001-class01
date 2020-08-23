@@ -1,14 +1,16 @@
 from django.shortcuts import render
 from .models import QiPaoShui
+from django.db.models import Sum, Count
 
 # Create your views here.
 
 def test(request):
     return render(request,'index.html')
 
-def pinglun(request):
+def result(request):
     content = QiPaoShui.objects.all()
     count = QiPaoShui.objects.all().count()
+    type_comment_count = QiPaoShui.objects.values('productType').annotate(c=Count('*'))
     type_count = QiPaoShui.objects.values('productType').distinct().count()
     user_count = QiPaoShui.objects.values('username').distinct().count()
 
@@ -21,3 +23,6 @@ def pinglun(request):
     bad_con_num = queryset.filter(**bad_condtions).count()
     
     return render(request, 'result.html', locals())
+
+def searchtest(request):
+    return render(request, 'searchresult.html')
