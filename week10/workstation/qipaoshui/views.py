@@ -3,16 +3,23 @@ from .models import QiPaoShui
 from django.db.models import Sum, Count
 
 # Create your views here.
-
-def test(request):
-    return render(request,'index.html')
-
-def result(request):
+def common():
     content = QiPaoShui.objects.all()
     count = QiPaoShui.objects.all().count()
-    type_comment_count = QiPaoShui.objects.values('productType').annotate(c=Count('*'))
     type_count = QiPaoShui.objects.values('productType').distinct().count()
     user_count = QiPaoShui.objects.values('username').distinct().count()
+    queryset = QiPaoShui.objects.values('sentiments')
+    good_condtions = {'sentiments__gte': 0.50}
+    good_con_num = queryset.filter(**good_condtions).count()
+    return {'content': content, 'count': count, 'type_count': type_count, \
+           'user_count': user_count, 'good_con_num': good_con_num}
+
+def result(request):
+    common_data = common()
+    content, count, type_count, user_count, good_con_num \
+    = common_data['content'], common_data['count'], common_data['type_count'], \
+    common_data['user_count'], common_data['good_con_num']
+    type_comment_count = QiPaoShui.objects.values('productType').annotate(c=Count('*'))
 
     queryset = QiPaoShui.objects.values('sentiments')
     good_condtions = {'sentiments__gte': 0.50}
@@ -25,4 +32,8 @@ def result(request):
     return render(request, 'result.html', locals())
 
 def searchtest(request):
-    return render(request, 'searchresult.html')
+    common_data = common()
+    content, count, type_count, user_count, good_con_num \
+    = common_data['content'], common_data['count'], common_data['type_count'], \
+    common_data['user_count'], common_data['good_con_num']
+    return render(request, 'searchresult.html', locals())
