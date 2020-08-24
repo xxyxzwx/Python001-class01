@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import QiPaoShui
 from django.db.models import Sum, Count
+import json
 
 # Create your views here.
 def common():
@@ -36,4 +37,10 @@ def searchtest(request):
     content, count, type_count, user_count, good_con_num \
     = common_data['content'], common_data['count'], common_data['type_count'], \
     common_data['user_count'], common_data['good_con_num']
-    return render(request, 'searchresult.html', locals())
+    if request.method =="GET":
+        query_body = None
+        return render(request, 'searchresult.html', locals())
+    elif request.method =="POST":
+        query_body = request.POST.get('query_body')
+        infor = QiPaoShui.objects.all().filter(username__icontains=query_body)
+        return render(request, 'searchresult.html', locals())
