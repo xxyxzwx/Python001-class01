@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import QiPaoShui
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Avg
 import json, time
 
 # Create your views here.
@@ -20,7 +20,8 @@ def result(request):
     content, count, type_count, user_count, good_con_num \
     = common_data['content'], common_data['count'], common_data['type_count'], \
     common_data['user_count'], common_data['good_con_num']
-    type_comment_count = QiPaoShui.objects.values('productType').annotate(c=Count('*'))
+    type_comment_count = QiPaoShui.objects.values('productType') \
+                         .annotate(a=Avg('sentiments'),c=Count('*'))
 
     queryset = QiPaoShui.objects.values('sentiments')
     good_condtions = {'sentiments__gte': 0.50}
@@ -51,7 +52,5 @@ def searchtest(request):
                     query_body = time.strftime("%Y-%m-%d",time.strptime(query_body,"%Y.%m.%d"))
                 except:
                     query_body = time.strftime("%Y-%m-%d",time.strptime(query_body,"%Y年%m月%d"))
-        print("query_condition",query_condition)
-        #infor = QiPaoShui.objects.all().filter(query_condition__icontains=query_body)
         infor = QiPaoShui.objects.all().filter(**{query_condition+"__icontains":query_body})
         return render(request, 'searchresult.html', locals())
