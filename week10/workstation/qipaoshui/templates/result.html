@@ -162,13 +162,20 @@
     <div class="col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <form class="bs-example bs-example-form" role="form" action="search">
+            <form class="bs-example bs-example-form" method="post" role="form" action="search">
                 {% csrf_token %}
                 <i class="fa fa-bar-chart-o fa-fw"></i> 查询评论
             </div>
             <div class="panel-body">
-                <input type="text" class="form-control" name="query_body"> 
-                <button class="btn btn-default" type="search">查询</button>
+                <label for="query_condition">查询条件</label>
+                <select name="query_condition">
+                    <option value="username" selected>用户</option>
+                    <option value="productType">品牌</option>
+                    <option value="productName">商品</option>
+                    <option value="comment_time">评论时间</option>
+                </select>
+                <input type="text" class="form-control" name="query_body">
+                <input type="submit" value="查询"><br>
                 </form>
             </div>
             <!-- /.panel-body -->

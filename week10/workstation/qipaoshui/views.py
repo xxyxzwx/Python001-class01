@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import QiPaoShui
 from django.db.models import Sum, Count
-import json
+import json, time
 
 # Create your views here.
 def common():
@@ -29,8 +29,8 @@ def result(request):
     good_con_num = queryset.filter(**good_condtions).count()
     bsd_con = QiPaoShui.objects.all().filter(**bad_condtions)
     bad_con_num = queryset.filter(**bad_condtions).count()
-    
-    return render(request, 'result.html', locals())
+    if request.method == "GET":
+        return render(request, 'result.html', locals())
 
 def searchtest(request):
     common_data = common()
@@ -42,5 +42,16 @@ def searchtest(request):
         return render(request, 'searchresult.html', locals())
     elif request.method =="POST":
         query_body = request.POST.get('query_body')
-        infor = QiPaoShui.objects.all().filter(username__icontains=query_body)
+        query_condition = request.POST.get('query_condition')
+        if query_condition == "comment_time":
+            try:
+                query_body = time.strftime("%Y-%m-%d",time.strptime(query_body,"%Y-%m-%d"))
+            except:
+                try:
+                    query_body = time.strftime("%Y-%m-%d",time.strptime(query_body,"%Y.%m.%d"))
+                except:
+                    query_body = time.strftime("%Y-%m-%d",time.strptime(query_body,"%Y年%m月%d"))
+        print("query_condition",query_condition)
+        #infor = QiPaoShui.objects.all().filter(query_condition__icontains=query_body)
+        infor = QiPaoShui.objects.all().filter(**{query_condition+"__icontains":query_body})
         return render(request, 'searchresult.html', locals())
