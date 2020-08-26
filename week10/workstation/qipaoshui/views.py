@@ -44,6 +44,7 @@ def searchtest(request):
     elif request.method =="POST":
         query_body = request.POST.get('query_body')
         query_condition = request.POST.get('query_condition')
+        #处理xxxx.xx.xx,xxxx-x-xx,xxxx年x月x日三种格式日期进行查询
         if query_condition == "comment_time":
             try:
                 query_body = time.strftime("%Y-%m-%d",time.strptime(query_body,"%Y-%m-%d"))
