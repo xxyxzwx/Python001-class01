@@ -13,7 +13,7 @@ class QipaoshuiSpider(scrapy.Spider):
         for urL in urLList:
             #meta传递参数给callback中的函数
             yield scrapy.Request(url = urL, callback=self.checkpage, meta={'url': urL})
-    
+
     def checkpage(self, response):
         pageList = response.xpath('//*[@id="comment"]/div[1]/ul[@class="pagination"]/li[position()<last()-2]/a/@href').extract()
         if len(pageList)!=0:
@@ -23,8 +23,12 @@ class QipaoshuiSpider(scrapy.Spider):
             #dont_filter跳过判断是否重复请求
             yield scrapy.Request(url = response.meta['url'], callback=self.getinfor, dont_filter=True)
     
-    def parse(self, response):
-        productType = response.xpath('//section/div/a[6]/span/text()').extract()[0]
+    def getinfor(self, response):
+        #部分商品没有产品分类
+        try:
+            productType = response.xpath('//section/div/a[6]/span/text()').extract()[0]
+        except IndexError:
+            productType = response.xpath('//section/div/a[5]/span/text()').extract()[0]
         productName = response.xpath('//article//h1/text()').extract()[0].replace(' ','').replace('\n','')
         comments = response.xpath('//div[@id="commentTabBlockNew"]//li/div[2]')
         item = AaaaItem()
