@@ -17,9 +17,7 @@ def common():
 
 def result(request):
     common_data = common()
-    content, count, type_count, user_count, good_con_num \
-    = common_data['content'], common_data['count'], common_data['type_count'], \
-    common_data['user_count'], common_data['good_con_num']
+    content, count, type_count, user_count, good_con_num = common_data.values()
     type_comment_count = QiPaoShui.objects.values('productType') \
                          .annotate(a=Avg('sentiments'),c=Count('*'))
 
@@ -35,8 +33,7 @@ def result(request):
 
 def searchtest(request):
     common_data = common()
-    content, count, type_count, user_count, good_con_num \
-    = common_data['content'], common_data['count'], common_data['type_count'], \
+    content, count, type_count, user_count, good_con_num = common_data.values()
     common_data['user_count'], common_data['good_con_num']
     if request.method =="GET":
         query_body = None
@@ -55,3 +52,9 @@ def searchtest(request):
                     query_body = time.strftime("%Y-%m-%d",time.strptime(query_body,"%Y年%m月%d"))
         infor = QiPaoShui.objects.all().filter(**{query_condition+"__icontains":query_body})
         return render(request, 'searchresult.html', locals())
+
+def allcomment(request):
+    common_data = common()
+    content, count, type_count, user_count, good_con_num = common_data.values()
+    print(len(content))
+    return render(request, 'allcomment.html', locals())

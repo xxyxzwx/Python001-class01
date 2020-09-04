@@ -105,10 +105,25 @@
 </div>
 <!-- /.row -->
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-bar-chart-o fa-fw"></i> 产品评论情况
+            <form class="bs-example bs-example-form" method="post" role="form" action="search">
+                {% csrf_token %}
+                <i class="fa fa-bar-chart-o fa-fw"></i> 查询评论
+            </div>
+            <div class="panel-body">
+                <label for="query_condition">查询条件</label>
+                <select name="query_condition">
+                    <option value="username" selected>用户</option>
+                    <option value="productType">品牌</option>
+                    <option value="productName">商品</option>
+                    <option value="comment_content">评论内容</option>
+                    <option value="comment_time">评论时间</option>
+                </select>
+                <input type="text" class="form-control" name="query_body">
+                <input type="submit" value="查询"><br>
+                </form>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -119,16 +134,20 @@
                                 <thead>
                                     <tr>
                                         <th>产品</th>
-                                        <th>评论数</th>
-                                        <th>舆论评价</th>
+                                        <th>商品</th>
+                                        <th>用户</th>
+                                        <th>评论</th>
+                                        <th>评论时间</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for pinglun in type_comment_count %}
+                                    {% for pinglun in content %}
                                         <tr>
                                             <td>{{pinglun.productType}}</td>
-                                            <td>{{pinglun.c}}</td>
-                                            <td>{{pinglun.a}}</td>
+                                            <td>{{pinglun.productName}}</td>
+                                            <td>{{pinglun.username}}</td>
+                                            <td>{{pinglun.comment_content}}</td>
+                                            <td>{{pinglun.comment_time}}</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -145,44 +164,6 @@
         </div>
         <!-- /.panel -->
 
-    </div>
-
-    <!-- /.col-lg-8 -->
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="fa fa-bar-chart-o fa-fw"></i> 气泡水用户满意度
-            </div>
-            <div class="panel-body">
-                <div id="morris-donut-chart" lg05={{ good_con_num }} lt05={{ bad_con_num }}></div>
-            </div>
-            <!-- /.panel-body -->
-        </div>
-        <!-- /.panel -->
-    </div>
-
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-            <form class="bs-example bs-example-form" method="post" role="form" action="search">
-                {% csrf_token %}
-                <i class="fa fa-bar-chart-o fa-fw"></i> 查询评论
-            </div>
-            <div class="panel-body">
-                <label for="query_condition">查询条件</label>
-                <select name="query_condition">
-                    <option value="username" selected>用户</option>
-                    <option value="productType">品牌</option>
-                    <option value="productName">商品</option>
-                    <option value="comment_time">评论时间</option>
-                </select>
-                <input type="text" class="form-control" name="query_body">
-                <input type="submit" value="查询"><br>
-                </form>
-            </div>
-            <!-- /.panel-body -->
-        </div>
-        <!-- /.panel -->
     </div>
 
 </div>
