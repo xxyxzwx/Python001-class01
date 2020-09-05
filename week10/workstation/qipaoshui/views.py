@@ -12,14 +12,13 @@ def common():
     queryset = QiPaoShui.objects.values('sentiments')
     good_condtions = {'sentiments__gte': 0.50}
     good_con_num = queryset.filter(**good_condtions).count()
-    return {'content': content, 'count': count, 'type_count': type_count, \
+    return {'content': content, 'count': count, 'type_count': type_count, 
            'user_count': user_count, 'good_con_num': good_con_num}
 
 def result(request):
     common_data = common()
     content, count, type_count, user_count, good_con_num = common_data.values()
-    type_comment_count = QiPaoShui.objects.values('productType') \
-                         .annotate(a=Avg('sentiments'),c=Count('*'))
+    type_comment_count = QiPaoShui.objects.values('productType').annotate(a=Avg('sentiments'),c=Count('*'))
 
     queryset = QiPaoShui.objects.values('sentiments')
     good_condtions = {'sentiments__gte': 0.50}
